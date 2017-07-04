@@ -2,6 +2,8 @@
 #include <SDL.h>
 #include <iostream>
 #include <string>
+#include <GL\glew.h>
+
 
 namespace AREngine {
 	class Display
@@ -13,7 +15,7 @@ namespace AREngine {
 
 	public:
 		SDL_Window* m_window;
-		SDL_Renderer* m_Renderer;
+		SDL_GLContext m_glContext;
 
 	public:
 

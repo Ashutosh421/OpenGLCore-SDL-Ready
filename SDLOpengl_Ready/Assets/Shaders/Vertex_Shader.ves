@@ -1,0 +1,17 @@
+#version 430 core
+
+layout( location = 0 ) in vec3 position;
+layout( location = 1 ) in vec4 vertColor;
+layout( location = 2 ) in vec3 normal;
+layout( location = 3 ) in vec2 uv;
+
+out VERT_OUT
+{
+	vec4 vColor;
+}vert_out;
+
+void main(){
+	gl_Position = vec4(position , 1.0f);
+	vert_out.vColor = vertColor;
+}
+
