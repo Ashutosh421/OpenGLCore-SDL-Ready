@@ -4,9 +4,9 @@
 #include <SDL_image.h>
 #include <SDL_mixer.h>
 #include <string>
-#include "../Utils/Input.h"
+#include "../Utils/Input/Input.h"
 #include "../Utils/Display.h"
-#include "../Utils/Time.h"
+#include "../SEngine/Time/Time.h"
 
 namespace AREngine {
 	enum EngineStatus
@@ -18,13 +18,18 @@ namespace AREngine {
 	class Engine
 	{
 	private:
-		static SDL_Event sdlEvent;
-	public:
-		static EngineStatus engineStatus;
-		static void Init();
+		SDL_Event sdlEvent;
+		static Engine* instance_H;
+		Engine() = default;
+		~Engine() = default;
 
-		static void Close();
-		static void PollEvents();
+	public:
+
+		static EngineStatus engineStatus;
+		void Init();
+		static Engine* instance();
+		void Close();
+		void PollEvents();
 	};
 }
 

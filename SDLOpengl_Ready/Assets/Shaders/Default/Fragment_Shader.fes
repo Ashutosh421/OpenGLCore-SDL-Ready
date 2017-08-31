@@ -1,0 +1,12 @@
+#version 430 core
+
+out vec4 color;
+
+in VERT_OUT
+{
+	vec4 vColor;
+}fs_in;
+
+void main(){
+	color = vec4(1.0, 0.0 , 0.0 , 1.0);
+}

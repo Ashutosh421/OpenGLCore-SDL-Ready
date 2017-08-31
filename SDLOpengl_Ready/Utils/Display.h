@@ -6,36 +6,31 @@
 
 
 namespace AREngine {
-	class Display
+	class Display final
 	{
 	private:
-		short m_width;
-		short m_height;
 		std::string m_title;
+		static Display* instance_H;
 
 	public:
 		SDL_Window* m_window;
 		SDL_GLContext m_glContext;
+		static int WIDTH;
+		static int HEIGHT;
+		~Display();
+		Display() = default;
 
 	public:
-
-		Display(std::string title, short width, short height);
+		void Launch(std::string title, short width, short height);
 		void Update();
 		void Clear();
-		~Display();
+		void Dispose();
+		void ResizeDisplay(short , short);
+		static Display* instance();
 
 		//Setters
 		inline void SetTitle(std::string title) {
 			this->m_title = title;
-		}
-
-		//Gettters
-		inline short GetWidth() {
-			return this->m_width;
-		}
-
-		inline short GetHeight() {
-			return this->m_height;
 		}
 
 		inline std::string GetTitle() {

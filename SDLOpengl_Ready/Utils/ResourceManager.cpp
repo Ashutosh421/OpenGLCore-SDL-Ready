@@ -29,3 +29,4 @@ std::string ResourceManager::LoadTextFromFile(const char* filePath) {
 	}
 }
 
+

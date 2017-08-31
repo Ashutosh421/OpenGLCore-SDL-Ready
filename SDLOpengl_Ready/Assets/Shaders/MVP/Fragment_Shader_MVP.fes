@@ -1,0 +1,59 @@
+#version 430 core
+
+out vec4 color;
+
+in VERT_OUT
+{	
+	vec4 fragPos;
+	vec4 vColor;
+	vec4 normal;
+	vec2 uv;
+}fs_in;
+
+uniform struct PointLight
+{
+	vec3 position;
+	vec4 color;
+	float intensity;
+}
+pointLight;
+
+uniform int numberOfLights;
+uniform sampler2D textureImage;
+
+struct Material
+{
+	float ambienceStrength;
+	vec4 ambience;
+	vec4 diffuse;
+	vec4 specular;
+	vec4 color;
+} material;
+
+vec4 lightDirection = vec4(1.0f);
+float lightDistance;
+float lightAttenuation;
+
+vec4 ambienceResult = vec4(0.0f);
+vec4 diffuseResult = vec4(0.0f);
+vec4 specularResult = vec4(0.0f);;
+
+void main()
+{		
+	material.ambienceStrength = 0.5f;
+	material.ambience = vec4(1.0f) * material.ambienceStrength;
+	material.diffuse = vec4(1.0f);
+	
+	if(numberOfLights > 0)
+	{
+		lightDirection = normalize(pointLight.position -  fs_in.fragPos);
+		lightDistance = length(pointLight.position - fs_in.fragPos);
+		lightAttenuation = 1.0 / (lightDistance * lightDistance);
+	    ambienceResult = material.ambience * material.ambienceStrength * (pointLight.color * pointLight.intensity) * lightAttenuation;
+	    diffuseResult =	material.diffuse * max(dot(normalize(fs_in.normal) , lightDirection), 0.0f) * pointLight.color * pointLight.intensity * lightAttenuation;
+	}
+
+	color = texture(textureImage , fs_in.uv) * (ambienceResult + diffuseResult);
+	//color = ambienceResult + diffuseResult;
+	//color = vec4(pointLight.position , 1.0f);
+}

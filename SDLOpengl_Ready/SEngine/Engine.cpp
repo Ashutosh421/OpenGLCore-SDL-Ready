@@ -1,7 +1,9 @@
 #include "Engine.h"
 
 namespace AREngine {
-	SDL_Event Engine::sdlEvent;
+
+	Engine* Engine::instance_H = nullptr;
+
 	EngineStatus Engine::engineStatus;
 
 	void Engine::Init() {
@@ -29,23 +31,40 @@ namespace AREngine {
 			std::cout << "Mix Open Audio Issue " << Mix_GetError() << std::endl;
 		}
 		engineStatus = EngineStatus::RUNNING;
+		//glEnable(GL_DEPTH_TEST);
 	}
 
 	void Engine::PollEvents() {
 		while (SDL_PollEvent(&sdlEvent))
 		{
-			Input::HandleInput(sdlEvent);
+			Input::HandleInput(&sdlEvent);
 			if (sdlEvent.type == SDL_QUIT)
 			{
 				engineStatus = EngineStatus::CLOSED;
 				break;
 			}
+			if (sdlEvent.type == SDL_WINDOWEVENT)
+			{
+				if (sdlEvent.window.event == SDL_WINDOWEVENT_RESIZED)
+				{
+					std::cout << "Resizing " << std::endl;
+					Display::instance()->ResizeDisplay(sdlEvent.window.data1, sdlEvent.window.data2);
+				}
+			}
 		}
 		Time::UpdateTime();
 	}
 
+	Engine* Engine::instance() {
+		if (instance_H == nullptr)
+		{
+			instance_H = new Engine();
+		}
+		return instance_H;
+	}
 
 	void Engine::Close() {
+		delete instance_H;
 		Mix_CloseAudio();
 		Mix_Quit();
 		IMG_Quit();

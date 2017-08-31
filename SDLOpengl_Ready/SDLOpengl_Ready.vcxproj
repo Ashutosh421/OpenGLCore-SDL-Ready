@@ -138,32 +138,71 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="SEngine\Lighting\LightManager.cpp" />
+    <ClCompile Include="SEngine\Lighting\AreaLight\AreaLight.cpp" />
+    <ClCompile Include="SEngine\Lighting\DirectionalLight\DirectionalLight.cpp" />
+    <ClCompile Include="Maths\Color.cpp" />
+    <ClCompile Include="SEngine\Lighting\PointLight\PointLight.cpp" />
+    <ClCompile Include="SEngine\Lighting\Light.cpp" />
+    <ClCompile Include="SEngine\Geometry\Cubemap.cpp" />
+    <ClCompile Include="SEngine\Entity\Entity.cpp" />
+    <ClCompile Include="SEngine\Geometry\Geometry.cpp" />
+    <ClCompile Include="SEngine\Camera\Camera.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Utils\Primitives\Primitive.cpp" />
-    <ClCompile Include="Utils\MeshUtils\Mesh.cpp" />
-    <ClCompile Include="Utils\Shader\Shader.cpp" />
+    <ClCompile Include="SEngine\Shader\ShaderManager.cpp" />
+    <ClCompile Include="SEngine\Transform\Transform.cpp" />
+    <ClCompile Include="SEngine\MeshUtils\MeshPoints\SinWave.cpp" />
+    <ClCompile Include="SEngine\MeshUtils\Mesh.cpp" />
+    <ClCompile Include="SEngine\Shader\Shader.cpp" />
+    <ClCompile Include="SEngine\Texture\Texture.cpp" />
+    <ClCompile Include="SEngine\Texture\TextureManager.cpp" />
+    <ClCompile Include="SEngine\Lighting\SpotLight\SpotLight.cpp" />
     <ClCompile Include="Utils\ResourceManager.cpp" />
     <ClCompile Include="SEngine\Engine.cpp" />
     <ClCompile Include="Utils\Display.cpp" />
-    <ClCompile Include="Utils\Input.cpp" />
-    <ClCompile Include="Utils\Time.cpp" />
+    <ClCompile Include="Utils\Input\Input.cpp" />
+    <ClCompile Include="SEngine\Time\Time.cpp" />
+    <ClCompile Include="Maths\Vector.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Utils\Primitives\Primitive.h" />
-    <ClInclude Include="Utils\MeshUtils\Mesh.h" />
-    <ClInclude Include="Utils\Shader\Shader.h" />
+    <ClInclude Include="..\..\..\..\Downloads\stb-master\stb-master\stb_image.h" />
+    <ClInclude Include="SEngine\Lighting\LightManager.h" />
+    <ClInclude Include="SEngine\Lighting\AreaLight\AreaLight.h" />
+    <ClInclude Include="SEngine\Lighting\DirectionalLight\DirectionalLight.h" />
+    <ClInclude Include="Maths\Color.h" />
+    <ClInclude Include="SEngine\Lighting\PointLight\PointLight.h" />
+    <ClInclude Include="SEngine\Lighting\Light.h" />
+    <ClInclude Include="SEngine\Geometry\Cubemap.h" />
+    <ClInclude Include="SEngine\Entity\Entity.h" />
+    <ClInclude Include="SEngine\Geometry\Geometry.h" />
+    <ClInclude Include="SEngine\Camera\Camera.h" />
+    <ClInclude Include="SEngine\ImageLoader\stb_image.h" />
+    <ClInclude Include="SEngine\Shader\ShaderManager.h" />
+    <ClInclude Include="SEngine\Transform\Transform.h" />
+    <ClInclude Include="SEngine\MeshUtils\MeshPoints\SinWave.h" />
+    <ClInclude Include="SEngine\MeshUtils\Mesh.h" />
+    <ClInclude Include="SEngine\Shader\Shader.h" />
+    <ClInclude Include="SEngine\Texture\Texture.h" />
+    <ClInclude Include="SEngine\Texture\TextureManager.h" />
+    <ClInclude Include="SEngine\Lighting\SpotLight\SpotLight.h" />
     <ClInclude Include="Utils\ResourceManager.h" />
     <ClInclude Include="SEngine\Engine.h" />
-    <ClInclude Include="Utils\Color.h" />
     <ClInclude Include="Utils\Display.h" />
-    <ClInclude Include="Utils\Input.h" />
-    <ClInclude Include="Utils\MeshUtils\Vertex.h" />
+    <ClInclude Include="Utils\Input\Input.h" />
+    <ClInclude Include="SEngine\MeshUtils\Vertex.h" />
     <ClInclude Include="Utils\Random.h" />
-    <ClInclude Include="Utils\Time.h" />
+    <ClInclude Include="SEngine\Time\Time.h" />
+    <ClInclude Include="Maths\Vector.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Shaders\Fragment_Shader.fes" />
-    <None Include="Assets\Shaders\Vertex_Shader.ves" />
+    <None Include="Assets\Shaders\Default\Fragment_Shader.fes" />
+    <None Include="Assets\Shaders\Default\Vertex_Shader.ves" />
+    <None Include="Assets\Shaders\Light\Default\Fragment_Shader_Light.fes" />
+    <None Include="Assets\Shaders\Light\Default\Vertex_Shader_Light.ves" />
+    <None Include="Assets\Shaders\MVP\Fragment_Shader_MVP.fes" />
+    <None Include="Assets\Shaders\MVP\Vertex_Shader_MVP.ves" />
+    <None Include="Assets\Shaders\Skybox\Fragment_Shader_Cubemap.fes" />
+    <None Include="Assets\Shaders\Skybox\Vertex_Shader_Cubemap.ves" />
     <None Include="libFLAC-8.dll" />
     <None Include="libjpeg-9.dll" />
     <None Include="libmodplug-1.dll" />
@@ -178,6 +217,27 @@
     <None Include="SDL2_mixer.dll" />
     <None Include="smpeg2.dll" />
     <None Include="zlib1.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\..\Documents\Graphics\Textures\WallTexture_1.jpg" />
+    <Image Include="..\..\..\..\Documents\Graphics\Textures\WallTexture_2.jpg" />
+    <Image Include="Assets\CubeMaps\ElySnow\4.tga" />
+    <Image Include="Assets\CubeMaps\ElySnow\2.tga" />
+    <Image Include="Assets\CubeMaps\ElySnow\5.tga" />
+    <Image Include="Assets\CubeMaps\ElySnow\1.tga" />
+    <Image Include="Assets\CubeMaps\ElySnow\0.tga" />
+    <Image Include="Assets\CubeMaps\ElySnow\3.tga" />
+    <Image Include="Assets\CubeMaps\JFNuke\4.tga" />
+    <Image Include="Assets\CubeMaps\JFNuke\2.tga" />
+    <Image Include="Assets\CubeMaps\JFNuke\5.tga" />
+    <Image Include="Assets\CubeMaps\JFNuke\1.tga" />
+    <Image Include="Assets\CubeMaps\JFNuke\0.tga" />
+    <Image Include="Assets\CubeMaps\JFNuke\3.tga" />
+    <Image Include="Assets\Textures\WallTexture_1.jpg" />
+    <Image Include="Assets\Textures\WallTexture_2.jpg" />
+    <Image Include="Assets\Textures\WallTexture_3.jpg" />
+    <Image Include="Assets\Textures\WallTexture_4.jpg" />
+    <Image Include="Assets\Textures\WallTexture_5.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
