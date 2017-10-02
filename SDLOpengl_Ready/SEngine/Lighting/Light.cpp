@@ -12,6 +12,11 @@ namespace AREngine
 		lightColor = new Color();
 		this->setColor(*lightColor);
 		this->intensity = 1.0f;
+
+		this->ambience = Vector3::zero;
+		this->diffuse = Vector3::zero;
+		this->specular = Vector3::zero;
+		this->specularStrength = 0;
 	}
 
 	void Light::setColor(const Color& color) {

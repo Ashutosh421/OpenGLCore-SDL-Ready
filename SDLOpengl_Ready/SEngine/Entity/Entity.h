@@ -6,6 +6,7 @@
 #include "../Shader/ShaderManager.h"
 #include "../Camera/Camera.h"
 #include "../Texture/Texture.h"
+#include "../Material/Material.h"
 
 namespace AREngine {
 
@@ -18,6 +19,7 @@ namespace AREngine {
 		Transform* transform;
 		Mesh* mesh;
 		Shader* shader;
+		Material* material;
 		Camera* viewCamera;
 	    std::vector<Texture*> textures;
 

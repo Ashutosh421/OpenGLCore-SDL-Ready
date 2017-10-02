@@ -5,7 +5,7 @@ namespace AREngine {
 	Camera::Camera()
 	{
 		transform = new Transform();
-		transform->position = Vector3( 0 , 0 , -3);
+		transform->position = Vector3( 0 , 0 , 0);
 		transform->eulerAngles = Vector3( 0 , 0 , 0);
 
 		forward = Vector3( 0 , 0 , 1);
@@ -16,8 +16,8 @@ namespace AREngine {
 	}
 
 	glm::mat4 Camera::getViewMatrix() {
-		//lookATTarget = position + forward;
-		lookATTarget = Vector3::zero;
+		lookATTarget = transform->position + forward;
+		//lookATTarget = Vector3::zero;
 		viewMatrix = glm::lookAt(transform->position.toGLM(), lookATTarget.toGLM(), up.toGLM());
 		return viewMatrix;
 	}

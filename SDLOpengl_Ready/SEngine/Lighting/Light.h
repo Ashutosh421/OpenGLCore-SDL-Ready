@@ -26,6 +26,11 @@ namespace AREngine
 		Mesh* mesh;
 		Camera* viewCamera;
 
+		Vector3 ambience;
+		Vector3 diffuse;
+		Vector3 specular;
+		float specularStrength;
+
 	public:
 		float intensity = 1.0f;
 		Color* lightColor;

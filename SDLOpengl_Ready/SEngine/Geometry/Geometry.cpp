@@ -225,12 +225,35 @@ namespace AREngine
 			this->shader->SetViewMatrix(this->viewCamera->getViewMatrix());
 			this->shader->SetProjectionMatrix(this->viewCamera->getProjectionMatrix());
 		}
-		if (LightManager::instance()->sceneLights.size() > 0)
-		{
-			this->shader->SetUniform_Int("numberOfLights", LightManager::instance()->sceneLights.size());
-			this->shader->SetUniform_Float("pointLight.intensity", LightManager::instance()->sceneLights[0]->intensity);
-			this->shader->SetUniform_Vec3("pointLight.position" , LightManager::instance()->sceneLights[0]->transform->position.toGLM());
-			this->shader->SetUniform_Vec4("pointLight.color", LightManager::instance()->sceneLights[0]->lightColor->toGLM());
+		if (LightManager::instance()->NumberOfLights() > 0)
+		{	
+			this->shader->SetUniform_Vec3("camera.position", this->viewCamera->transform->position.toGLM());
+			this->shader->SetUniform_Vec4("material.ambience",this->material->getAmbience().toGLM());
+			this->shader->SetUniform_Vec4("material.diffuse",this->material->getDiffuse().toGLM());
+			this->shader->SetUniform_Vec4("material.specular", this->material->getSpecular().toGLM());
+			this->shader->SetUniform_Float("material.ambienceStrength",this->material->getAmbienceStrength());
+			this->shader->SetUniform_Float("material.diffuseStrength",this->material->getDiffuseStrength());
+			this->shader->SetUniform_Float("material.specularStrength",this->material->getSpecularStrength());
+			if (LightManager::instance()->NumberOfPointLights() > 0)
+			{
+				this->shader->SetUniform_Float("pointLight.intensity", LightManager::instance()->pointLights[0]->intensity);
+				this->shader->SetUniform_Vec3("pointLight.position", LightManager::instance()->pointLights[0]->transform->position.toGLM());
+				this->shader->SetUniform_Vec4("pointLight.color", LightManager::instance()->pointLights[0]->lightColor->toGLM());
+			}
+			if (LightManager::instance()->NumberOfDirectionalLights() > 0)
+			{
+				this->shader->SetUniform_Float("directionalLight.intensity", LightManager::instance()->directionalLights[0]->intensity);
+				this->shader->SetUniform_Vec3("directionalLight.direction", ((DirectionalLight*)LightManager::instance()->directionalLights[0])->getDirection());
+				this->shader->SetUniform_Vec4("directionalLight.color", LightManager::instance()->directionalLights[0]->lightColor->toGLM());
+			}
+			if (LightManager::instance()->NumberOfSpotLights() > 0)
+			{
+
+			}
+			if (LightManager::instance()->NumberOfAreaLights() > 0)
+			{
+
+			}
 		}
 		if (this->textures.size() > 0)
 		{
@@ -266,13 +289,37 @@ namespace AREngine
 				this->textures[i]->Bind();
 			}
 		}
-		if (LightManager::instance()->sceneLights.size() > 0)
+		if (LightManager::instance()->NumberOfLights() > 0)
 		{
-			this->shader->SetUniform_Int("numberOfLights", LightManager::instance()->sceneLights.size());
-			this->shader->SetUniform_Float("pointLight.intensity", LightManager::instance()->sceneLights[0]->intensity);
-			this->shader->SetUniform_Vec3("pointLight.position", LightManager::instance()->sceneLights[0]->transform->position.toGLM());
-			this->shader->SetUniform_Vec4("pointLight.color", LightManager::instance()->sceneLights[0]->lightColor->toGLM());
+			this->shader->SetUniform_Vec3("camera.position", this->viewCamera->transform->position.toGLM());
+			this->shader->SetUniform_Vec4("material.ambience", this->material->getAmbience().toGLM());
+			this->shader->SetUniform_Vec4("material.diffuse", this->material->getDiffuse().toGLM());
+			this->shader->SetUniform_Vec4("material.specular", this->material->getSpecular().toGLM());
+			this->shader->SetUniform_Float("material.ambienceStrength", this->material->getAmbienceStrength());
+			this->shader->SetUniform_Float("material.diffuseStrength", this->material->getDiffuseStrength());
+			this->shader->SetUniform_Float("material.specularStrength", this->material->getSpecularStrength());
+			if (LightManager::instance()->NumberOfPointLights() > 0)
+			{
+				this->shader->SetUniform_Float("pointLight.intensity", LightManager::instance()->pointLights[0]->intensity);
+				this->shader->SetUniform_Vec3("pointLight.position", LightManager::instance()->pointLights[0]->transform->position.toGLM());
+				this->shader->SetUniform_Vec4("pointLight.color", LightManager::instance()->pointLights[0]->lightColor->toGLM());
+			}
+			if (LightManager::instance()->NumberOfDirectionalLights() > 0)
+			{
+				this->shader->SetUniform_Float("directionalLight.intensity", LightManager::instance()->directionalLights[0]->intensity);
+				this->shader->SetUniform_Vec3("directionalLight.direction", ((DirectionalLight*)LightManager::instance()->directionalLights[0])->getDirection());
+				this->shader->SetUniform_Vec4("directionalLight.color", LightManager::instance()->directionalLights[0]->lightColor->toGLM());
+			}
+			if (LightManager::instance()->NumberOfSpotLights() > 0)
+			{
+
+			}
+			if (LightManager::instance()->NumberOfAreaLights() > 0)
+			{
+
+			}
 		}
+	
 		this->mesh->Draw();
 		if (this->textures.size() > 0)
 		{
@@ -300,13 +347,39 @@ namespace AREngine
 				this->textures[i]->Bind();
 			}
 		}
-		if (LightManager::instance()->sceneLights.size() > 0)
-		{	
-			this->shader->SetUniform_Int("numberOfLights",LightManager::instance()->sceneLights.size());
-			this->shader->SetUniform_Float("pointLight.intensity", LightManager::instance()->sceneLights[0]->intensity);
-			this->shader->SetUniform_Vec3("pointLight.position", LightManager::instance()->sceneLights[0]->transform->position.toGLM());
-			this->shader->SetUniform_Vec4("pointLight.color", LightManager::instance()->sceneLights[0]->lightColor->toGLM());
+		
+		if (LightManager::instance()->NumberOfLights() > 0)
+		{
+			this->shader->SetUniform_Vec3("camera.position", this->viewCamera->transform->position.toGLM());
+			this->shader->SetUniform_Vec4("material.ambience", this->material->getAmbience().toGLM());
+			this->shader->SetUniform_Vec4("material.diffuse", this->material->getDiffuse().toGLM());
+			this->shader->SetUniform_Vec4("material.specular", this->material->getSpecular().toGLM());
+			this->shader->SetUniform_Float("material.ambienceStrength", this->material->getAmbienceStrength());
+			this->shader->SetUniform_Float("material.diffuseStrength", this->material->getDiffuseStrength());
+			this->shader->SetUniform_Float("material.specularStrength", this->material->getSpecularStrength());
+			if (LightManager::instance()->NumberOfPointLights() > 0)
+			{
+				this->shader->SetUniform_Float("pointLight.intensity", LightManager::instance()->pointLights[0]->intensity);
+				this->shader->SetUniform_Vec3("pointLight.position", LightManager::instance()->pointLights[0]->transform->position.toGLM());
+				this->shader->SetUniform_Vec4("pointLight.color", LightManager::instance()->pointLights[0]->lightColor->toGLM());
+			}
+			if (LightManager::instance()->NumberOfDirectionalLights() > 0)
+			{
+				this->shader->SetUniform_Float("directionalLight.intensity", LightManager::instance()->directionalLights[0]->intensity);
+				this->shader->SetUniform_Vec3("directionalLight.direction", ((DirectionalLight*)LightManager::instance()->directionalLights[0])->getDirection());
+				this->shader->SetUniform_Vec4("directionalLight.color", LightManager::instance()->directionalLights[0]->lightColor->toGLM());
+			}
+			if (LightManager::instance()->NumberOfSpotLights() > 0)
+			{
+
+			}
+			if (LightManager::instance()->NumberOfAreaLights() > 0)
+			{
+
+			}
 		}
+		
+		
 		this->mesh->Draw();
 		if (this->textures.size() > 0)
 		{

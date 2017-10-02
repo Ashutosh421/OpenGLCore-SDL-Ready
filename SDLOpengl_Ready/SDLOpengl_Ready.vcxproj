@@ -138,6 +138,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="SEngine\Material\Material.cpp" />
     <ClCompile Include="SEngine\Lighting\LightManager.cpp" />
     <ClCompile Include="SEngine\Lighting\AreaLight\AreaLight.cpp" />
     <ClCompile Include="SEngine\Lighting\DirectionalLight\DirectionalLight.cpp" />
@@ -166,6 +167,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\Downloads\stb-master\stb-master\stb_image.h" />
+    <ClInclude Include="SEngine\Material\Material.h" />
     <ClInclude Include="SEngine\Lighting\LightManager.h" />
     <ClInclude Include="SEngine\Lighting\AreaLight\AreaLight.h" />
     <ClInclude Include="SEngine\Lighting\DirectionalLight\DirectionalLight.h" />

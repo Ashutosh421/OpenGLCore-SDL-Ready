@@ -10,50 +10,96 @@ in VERT_OUT
 	vec2 uv;
 }fs_in;
 
+
+
+uniform int numberOfLights_Point;
+uniform int numberOfLights_Directional;
+uniform int numberOfLights_Area;
+uniform int numberOfLights_Spot;
+
+uniform sampler2D textureImage;
+
+uniform struct Camera{
+	vec3 position;
+}camera;
+
 uniform struct PointLight
 {
 	vec3 position;
 	vec4 color;
 	float intensity;
-}
-pointLight;
+}pointLight;
 
-uniform int numberOfLights;
-uniform sampler2D textureImage;
+uniform struct DirectionalLight
+{
+	vec3 direction;
+	vec4 color;
+	float intensity;
+}directionalLight;
 
-struct Material
+uniform struct Material
 {
 	float ambienceStrength;
+	float specularStrength;
+	float diffuseStrength;
 	vec4 ambience;
 	vec4 diffuse;
 	vec4 specular;
 	vec4 color;
 } material;
 
-vec4 lightDirection = vec4(1.0f);
-float lightDistance;
-float lightAttenuation;
-
-vec4 ambienceResult = vec4(0.0f);
-vec4 diffuseResult = vec4(0.0f);
-vec4 specularResult = vec4(0.0f);;
+vec4 finalColor;
+vec4 CalculatePointLightEffect(PointLight);
+vec4 CalculateDirectionalLightEffect(DirectionalLight);
 
 void main()
-{		
-	material.ambienceStrength = 0.5f;
-	material.ambience = vec4(1.0f) * material.ambienceStrength;
-	material.diffuse = vec4(1.0f);
-	
-	if(numberOfLights > 0)
-	{
-		lightDirection = normalize(pointLight.position -  fs_in.fragPos);
-		lightDistance = length(pointLight.position - fs_in.fragPos);
-		lightAttenuation = 1.0 / (lightDistance * lightDistance);
-	    ambienceResult = material.ambience * material.ambienceStrength * (pointLight.color * pointLight.intensity) * lightAttenuation;
-	    diffuseResult =	material.diffuse * max(dot(normalize(fs_in.normal) , lightDirection), 0.0f) * pointLight.color * pointLight.intensity * lightAttenuation;
-	}
+{	
+	finalColor += CalculatePointLightEffect(pointLight);
+	finalColor += CalculateDirectionalLightEffect(directionalLight);
 
-	color = texture(textureImage , fs_in.uv) * (ambienceResult + diffuseResult);
-	//color = ambienceResult + diffuseResult;
-	//color = vec4(pointLight.position , 1.0f);
+	color = texture(textureImage , fs_in.uv) * finalColor;
 }
+
+vec4 CalculateDirectionalLightEffect(DirectionalLight directionalLight)
+{
+	vec4 ambienceResult = vec4(0.0f);
+	vec4 diffuseResult = vec4(0.0f);
+
+	vec4 specularResult = vec4(0.0f);
+	vec4 viewDirection = vec4(0.0f);
+	vec4 reflectionDirection = vec4(0.0f);
+	vec4 halfwayDirection = vec4(0.0f);
+
+	ambienceResult = material.ambience * material.ambienceStrength * (directionalLight.color * directionalLight.intensity);
+	diffuseResult = material.diffuse * max(dot(normalize(vec4(-directionalLight.direction.xyz , 1.0f)) , normalize(fs_in.normal)) , 0.0f) * material.diffuseStrength * (directionalLight.color * directionalLight.intensity);
+	
+	viewDirection = normalize(vec4(camera.position.xyz , 1.0f) - fs_in.fragPos);
+	reflectionDirection = normalize(reflect(normalize(vec4(directionalLight.direction.xyz , 0.0f )) , normalize(fs_in.normal)));
+	halfwayDirection = normalize(normalize(directionalLight.direction) + viewDirection);
+	specularResult = material.specular * pow(max(dot(halfwayDirection , normalize(fs_in.normal)) , 0.0f) , 64) * (directionalLight.color * directionalLight.intensity);
+	
+	return (ambienceResult + diffuseResult + specularResult);
+}
+
+vec4 CalculatePointLightEffect(PointLight pointLight)
+{
+	vec4 ambienceResult = vec4(0.0f);
+	vec4 diffuseResult = vec4(0.0f);
+	vec4 specularResult = vec4(0.0f);
+
+	vec4 lightDirection = normalize( vec4(pointLight.position.xyz, 1.0f) - fs_in.fragPos);
+	float lightDistance = length(pointLight.position - fs_in.fragPos);
+	float lightAttenuation = 1f / (lightDistance * lightDistance);
+
+	ambienceResult = material.ambience * material.ambienceStrength * (pointLight.color * pointLight.intensity) * lightAttenuation;
+
+	diffuseResult =	material.diffuse * max(dot(normalize(fs_in.normal) , lightDirection), 0.0f) * (pointLight.color * pointLight.intensity) * lightAttenuation ;
+
+	vec4 viewDirection = normalize(vec4(camera.position.xyz , 1.0f) - fs_in.fragPos);
+	vec4 reflectionDirection = normalize(reflect(-lightDirection , fs_in.normal));
+	vec4 halfwayDirection = normalize(viewDirection + lightDirection);
+	specularResult = material.specular * pow(max(dot(fs_in.normal , halfwayDirection) , 0.0) , 64) * material.specularStrength  *  (pointLight.color * pointLight.intensity) * lightAttenuation;
+
+	return (ambienceResult + diffuseResult + specularResult);
+}
+

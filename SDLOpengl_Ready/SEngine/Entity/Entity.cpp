@@ -7,6 +7,7 @@ namespace AREngine {
 		this->transform = new Transform();
 		this->mesh = new Mesh();
 		this->shader = new Shader(ShaderManager::DEFAULT_VERTEXSHADER, ShaderManager::DEFAULT_FRAGMENTSHADER);
+		this->material = new Material();
 	}
 
 	void Entity::SetViewCamera(Camera* viewCamera) {
@@ -24,6 +25,7 @@ namespace AREngine {
 		delete this->mesh;
 		delete this->shader;
 		delete this->vertices;
+		delete this->material;
 		for (auto i = textures.begin(); i <= textures.end(); i++)
 		{
 			delete *i;

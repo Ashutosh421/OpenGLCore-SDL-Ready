@@ -7,6 +7,7 @@ namespace AREngine {
 	{
 	private:
 
+
 	public:
 		PointLight();
 		~PointLight();

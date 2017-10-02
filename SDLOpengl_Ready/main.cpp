@@ -35,7 +35,7 @@ Geometry* cube;
 Geometry* cube2;
 
 
-Light* pointLight;
+Light* directionalLight;
 
 Cubemap* cubemap;
 
@@ -63,25 +63,35 @@ void init()
 	quad->transform->position = Vector3(0, 2, 0);
 	quad->transform->eulerAngles = Vector3(90 , 0 , 0);
 	quad->transform->scale = Vector3(20 ,10 , 10);
+	quad->material->setAmbienceStrength(0.5f);
+	quad->material->setDiffuseStrength(1.2f);
+	quad->material->setSpecularStrength(1);
 
 	cube = Geometry::Instantiate(Geometry::GeometryType::CUBE);
 	cube->setShader("Assets/Shaders/MVP/Vertex_Shader_MVP.ves", "Assets/Shaders/MVP/Fragment_Shader_MVP.fes");
 	cube->SetViewCamera(mainCamera);
 	cube->setTexture("Assets/Textures/WallTexture_1.jpg");
 	cube->transform->position = Vector3( 0 , 0.8f , -1);
+	cube->material->setAmbienceStrength(0.5f);
+	cube->material->setDiffuseStrength(1.2);
+	cube->material->setSpecularStrength(1);
 
 	cube2 = Geometry::Instantiate(Geometry::GeometryType::CUBE);
 	cube2->setShader("Assets/Shaders/MVP/Vertex_Shader_MVP.ves", "Assets/Shaders/MVP/Fragment_Shader_MVP.fes");
 	cube2->SetViewCamera(mainCamera);
 	cube2->setTexture("Assets/Textures/WallTexture_1.jpg");
 	cube2->transform->position = Vector3(-2, 0.8f, -1);
+	cube2->material->setAmbienceStrength(0.5f);
+	cube2->material->setDiffuseStrength(1.2);
+	cube2->material->setSpecularStrength(1);
 
-	pointLight = LightManager::Instantiate(LightType::POINT_LIGHT);
-	pointLight->setViewCamera(mainCamera);
-	pointLight->transform->position = Vector3( 0 , -2 , -3);
-	pointLight->transform->scale = Vector3(0.2f , 0.2f , 0.2f);
-	pointLight->setColor(Color::maroon);
-	pointLight->intensity = 4.5f;
+	directionalLight = LightManager::Instantiate(LightType::DIRECTIONAL_LIGHT);
+	directionalLight->setViewCamera(mainCamera);
+	directionalLight->transform->position = Vector3( 0 , -2 , -3);
+	directionalLight->transform->scale = Vector3(0.2f , 0.2f , 0.2f);
+	directionalLight->setColor(Color::white);
+	directionalLight->intensity = 1.0f;
+	((DirectionalLight*)directionalLight)->setDirection(Vector3(10 , 10 , 10));
 
 	cubemap = new Cubemap("Assets/CubeMaps/JFNuke");
 	cubemap->SetViewCamera(mainCamera);
@@ -101,8 +111,6 @@ void GameLoop()
 	}
 }
 
-int testSpeed = 5;
-
 void Rendering()
 {
 	cubemap->update();
@@ -113,48 +121,46 @@ void Rendering()
 	cube2->update();
 	cube->transform->Rotate(Vector3( 0 , 30 , 0) * Time::deltaTime);
 	mainCamera->update();
-	mainCamera->LookAT(Vector3::zero);
-	mainCamera->transform->Translate(Vector3(sin(Time::time) * 5 , 0 , cos(Time::time) * 5) * (Time::deltaTime * 0.1));
-	
+
 	if (Input::IsKeyDown_Repeat(SDL_SCANCODE_RIGHT))
 	{
-		pointLight->transform->Translate(Vector3(1, 0, 0) * Time::deltaTime);
+		directionalLight->transform->Translate(Vector3(1, 0, 0) * Time::deltaTime);
 	}
 	if (Input::IsKeyDown_Repeat(SDL_SCANCODE_LEFT))
 	{
-		pointLight->transform->Translate(Vector3(-1, 0, 0) * Time::deltaTime);
+		directionalLight->transform->Translate(Vector3(-1, 0, 0) * Time::deltaTime);
 	}
 	if (Input::IsKeyDown_Repeat(SDL_SCANCODE_UP))
 	{
 		if (Input::IsKeyDown_Repeat(SDL_SCANCODE_LSHIFT))
 		{
-			pointLight->transform->Translate(Vector3(0, 1, 0) * Time::deltaTime);
+			directionalLight->transform->Translate(Vector3(0, 1, 0) * Time::deltaTime);
 		}
 		else
 		{
-			pointLight->transform->Translate(Vector3(0, 0, 1) * Time::deltaTime);
+			directionalLight->transform->Translate(Vector3(0, 0, 1) * Time::deltaTime);
 		}
 	}
 	if (Input::IsKeyDown_Repeat(SDL_SCANCODE_DOWN))
 	{
 		if (Input::IsKeyDown_Repeat(SDL_SCANCODE_LSHIFT))
 		{
-			pointLight->transform->Translate(Vector3(0, -1, 0) * Time::deltaTime);
+			directionalLight->transform->Translate(Vector3(0, -1, 0) * Time::deltaTime);
 		}
 		else
 		{
-			pointLight->transform->Translate(Vector3(0, 0, -1) * Time::deltaTime);
+			directionalLight->transform->Translate(Vector3(0, 0, -1) * Time::deltaTime);
 		}
 	}
-	
 
-	pointLight->update();
+	//directionalLight->update();
 }
 
 void close()
 {	
 	Display::instance()->Dispose();
 	TextureManager::Clean();
+	LightManager::instance()->Clean();
 	Engine::instance()->Close();
 }
 

@@ -4,7 +4,7 @@ namespace AREngine
 {
 	DirectionalLight::DirectionalLight()
 	{
-
+		this->direction = Vector3( 0 , 0 , 0 );
 	}
 
 	DirectionalLight::~DirectionalLight()
